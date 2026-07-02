@@ -204,7 +204,7 @@ export default function TeamStandardsPage() {
           </div>
 
           <div className="mt-5 flex justify-center">
-            <Wordmark size={14} />
+            <Wordmark size={56} />
           </div>
 
           <p style={{ fontSize: 13.5, color: "var(--cream)", marginTop: 20, textAlign: "center", lineHeight: 1.5 }}>

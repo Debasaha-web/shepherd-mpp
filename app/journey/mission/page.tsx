@@ -166,7 +166,7 @@ export default function MissionPage() {
               </p>
             )}
             <div className="mt-6">
-              <Wordmark size={15} />
+              <Wordmark size={60} />
             </div>
           </div>
 

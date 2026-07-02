@@ -300,7 +300,7 @@ function PressReleaseView({ data }: { data: PressReleaseData }) {
       </p>
 
       <div className="mt-5">
-        <Wordmark size={15} />
+        <Wordmark size={60} />
       </div>
     </article>
   );

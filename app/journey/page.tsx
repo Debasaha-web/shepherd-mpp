@@ -38,7 +38,7 @@ export default function JourneyPage() {
   return (
     <main className="screen flex flex-col min-h-screen pb-12">
       <header className="pt-8 flex items-center justify-between">
-        <Wordmark />
+        <Wordmark size={54} />
         <button
           onClick={() => {
             clearAthlete();

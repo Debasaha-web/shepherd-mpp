@@ -206,7 +206,7 @@ export default function NonNegotiablesPage() {
               </div>
             ))}
             <div className="mt-2 flex justify-center">
-              <Wordmark size={14} />
+              <Wordmark size={56} />
             </div>
           </div>
 
