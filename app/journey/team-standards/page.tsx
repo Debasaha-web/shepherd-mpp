@@ -89,7 +89,7 @@ export default function TeamStandardsPage() {
       {/* STEP 1 — Pick three */}
       {step === 1 && (
         <section className="screen mt-2 flex flex-col flex-1">
-          <h1 className="font-head" style={{ fontSize: 23, fontWeight: 800, lineHeight: 1.2, color: "var(--cream)" }}>
+          <h1 className="font-display" style={{ fontSize: 25, fontWeight: 700, lineHeight: 1.2, color: "var(--cream)" }}>
             Your Team Standards.
           </h1>
           <p style={{ fontSize: 13.5, color: "var(--muted)", marginTop: 10, lineHeight: 1.5 }}>
@@ -115,8 +115,8 @@ export default function TeamStandardsPage() {
                       width: 18,
                       height: 18,
                       borderRadius: 5,
-                      background: picks[c.key] ? "var(--cream)" : "var(--navy-card)",
-                      color: picks[c.key] ? "#0a1322" : "var(--muted)",
+                      background: picks[c.key] ? "var(--gold)" : "var(--navy-card)",
+                      color: picks[c.key] ? "#ffffff" : "var(--muted)",
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -175,7 +175,7 @@ export default function TeamStandardsPage() {
 
           <div
             className="card flex flex-col"
-            style={{ padding: "8px 0", background: "radial-gradient(circle at 50% 0%, #0f1e30 0%, #0a1322 75%)" }}
+            style={{ padding: "8px 0", background: "radial-gradient(circle at 50% 0%, #ffffff 0%, #f6f3ec 75%)" }}
           >
             {chosen.map((row, i) => (
               <div key={i} style={{ padding: "22px 22px", borderBottom: i < 2 ? "1px solid var(--border)" : "none" }}>
@@ -194,8 +194,8 @@ export default function TeamStandardsPage() {
                   </span>
                 </div>
                 <p
-                  className="font-head"
-                  style={{ fontSize: 18, color: "var(--cream)", lineHeight: 1.3, fontWeight: 700 }}
+                  className="font-display"
+                  style={{ fontSize: 19, color: "var(--cream)", lineHeight: 1.3, fontWeight: 700 }}
                 >
                   {row.standard}
                 </p>

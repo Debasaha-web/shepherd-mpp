@@ -270,7 +270,7 @@ function WinChip({
 
 function PressReleaseView({ data }: { data: PressReleaseData }) {
   return (
-    <article className="card p-6" style={{ background: "linear-gradient(180deg, #0f1e30 0%, #0a1322 100%)" }}>
+    <article className="card p-6" style={{ background: "linear-gradient(180deg, #ffffff 0%, #f6f3ec 100%)" }}>
       <p className="eyebrow" style={{ fontSize: 9.5 }}>
         Shepherd Coach Network · For Immediate Release
       </p>

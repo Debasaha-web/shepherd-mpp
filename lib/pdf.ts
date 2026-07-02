@@ -8,15 +8,15 @@
 // browser when the athlete taps "Download", which is the most reliable setup.
 //
 // Fonts: we use the built-in Helvetica family so generation never depends on a
-// network font fetch. The brand identity comes through the navy background,
+// network font fetch. The brand identity comes through the cream background,
 // gold accent, and Shepherd wordmark.
 
-const INK = "#0a1322";
-const INK2 = "#0f1e30";
-const LIME = "#c8a04a";
-const CREAM = "#e8e4da";
-const MIST = "#8a9aaa";
-const BLUE = "#c8a04a";
+const INK = "#f6f3ec";    // page background (cream)
+const INK2 = "#ffffff";   // panels
+const LIME = "#b08d3c";   // gold accent
+const CREAM = "#2b2b2b";  // primary text (charcoal)
+const MIST = "#4a4a4a";   // secondary text (slate)
+const BLUE = "#b08d3c";   // gold
 
 function triggerDownload(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
@@ -65,7 +65,7 @@ export async function downloadMissionPdf(d: MissionData) {
     para: { fontFamily: "Helvetica", fontSize: 13, color: CREAM, lineHeight: 1.7, marginTop: 22 },
     faith: { fontFamily: "Helvetica-Oblique", fontSize: 14, color: LIME, lineHeight: 1.5, marginTop: 22 },
     footer: { position: "absolute", bottom: 44, left: 56, right: 56, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-    footerLine: { position: "absolute", bottom: 86, left: 56, right: 56, height: 1, backgroundColor: "#1c2d44" },
+    footerLine: { position: "absolute", bottom: 86, left: 56, right: 56, height: 1, backgroundColor: "#e0d9cc" },
     wordmark: { fontFamily: "Helvetica-Bold", fontSize: 15, color: CREAM, letterSpacing: 1 },
     wordmarkSub: { fontFamily: "Helvetica", fontSize: 8, color: MIST, letterSpacing: 2, textTransform: "uppercase" },
     season: { fontFamily: "Helvetica", fontSize: 9, color: MIST, letterSpacing: 2, textTransform: "uppercase" },
@@ -132,12 +132,12 @@ export async function downloadPressReleasePdf(d: PressReleaseData) {
     forImmediate: { fontFamily: "Helvetica", fontSize: 8, letterSpacing: 2, color: MIST, textTransform: "uppercase", marginTop: 4 },
     headline: { fontFamily: "Helvetica-Bold", fontSize: 25, color: CREAM, lineHeight: 1.12, marginTop: 18 },
     dateline: { fontFamily: "Helvetica-Bold", fontSize: 11, color: BLUE, marginTop: 16, letterSpacing: 1 },
-    rule: { height: 1, backgroundColor: "#1c2d44", marginTop: 16, marginBottom: 18 },
+    rule: { height: 1, backgroundColor: "#e0d9cc", marginTop: 16, marginBottom: 18 },
     para: { fontFamily: "Helvetica", fontSize: 11.5, color: CREAM, lineHeight: 1.65, marginBottom: 13 },
     quoteBox: { borderLeftWidth: 3, borderLeftColor: LIME, paddingLeft: 14, paddingVertical: 4, marginVertical: 10 },
     quoteText: { fontFamily: "Helvetica-Oblique", fontSize: 13, color: CREAM, lineHeight: 1.5 },
     quoteAttr: { fontFamily: "Helvetica-Bold", fontSize: 9, color: MIST, marginTop: 7, letterSpacing: 1, textTransform: "uppercase" },
-    footerLine: { position: "absolute", bottom: 84, left: 52, right: 52, height: 1, backgroundColor: "#1c2d44" },
+    footerLine: { position: "absolute", bottom: 84, left: 52, right: 52, height: 1, backgroundColor: "#e0d9cc" },
     footer: { position: "absolute", bottom: 44, left: 52, right: 52, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
     wordmark: { fontFamily: "Helvetica-Bold", fontSize: 15, color: CREAM, letterSpacing: 1 },
     wordmarkSub: { fontFamily: "Helvetica", fontSize: 8, color: MIST, letterSpacing: 2, textTransform: "uppercase" },

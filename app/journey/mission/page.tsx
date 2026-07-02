@@ -97,7 +97,7 @@ export default function MissionPage() {
                 justifyContent: "center",
                 background: dedicateToGod ? "var(--gold)" : "transparent",
                 border: `1.5px solid ${dedicateToGod ? "var(--gold)" : "var(--border)"}`,
-                color: "#0a1322",
+                color: "#ffffff",
                 fontSize: 14,
               }}
             >
@@ -142,7 +142,7 @@ export default function MissionPage() {
 
           <div
             className="card p-6"
-            style={{ background: "linear-gradient(180deg, #0f1e30 0%, #0a1322 100%)" }}
+            style={{ background: "linear-gradient(180deg, #ffffff 0%, #f6f3ec 100%)" }}
           >
             <p style={{ fontSize: 11, color: "var(--muted)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 10 }}>
               {athlete.full_name}
@@ -212,7 +212,7 @@ function Loading() {
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
     <section className="screen mt-2 flex flex-col flex-1">
-      <h1 className="font-head" style={{ fontSize: 23, fontWeight: 800, lineHeight: 1.2, color: "var(--cream)" }}>
+      <h1 className="font-display" style={{ fontSize: 25, fontWeight: 700, lineHeight: 1.2, color: "var(--cream)" }}>
         {title}
       </h1>
       {hint && <p style={{ fontSize: 13.5, color: "var(--muted)", marginTop: 10, lineHeight: 1.5 }}>{hint}</p>}

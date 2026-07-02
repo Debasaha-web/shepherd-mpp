@@ -22,8 +22,8 @@ export function Section({
   return (
     <section className="screen mt-2 flex flex-col flex-1">
       <h1
-        className="font-head"
-        style={{ fontSize: 23, fontWeight: 800, lineHeight: 1.2, color: "var(--cream)" }}
+        className="font-display"
+        style={{ fontSize: 25, fontWeight: 700, lineHeight: 1.2, color: "var(--cream)" }}
       >
         {title}
       </h1>

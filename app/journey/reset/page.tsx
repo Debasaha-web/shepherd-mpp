@@ -201,7 +201,7 @@ export default function ResetPage() {
             className="card glow-anim flex flex-col items-center justify-center text-center"
             style={{
               padding: "44px 22px",
-              background: "radial-gradient(circle at 50% 0%, #0f1e30 0%, #0a1322 70%)",
+              background: "radial-gradient(circle at 50% 0%, #ffffff 0%, #f6f3ec 70%)",
             }}
           >
             <Big n={1} text={physicalFinal} />

@@ -87,8 +87,8 @@ export default function JourneyPage() {
                     width: 46,
                     height: 46,
                     borderRadius: 13,
-                    background: isDone ? badge : "rgba(255,255,255,0.04)",
-                    color: isDone ? "#0a1322" : hex,
+                    background: isDone ? badge : "rgba(176,141,60,0.10)",
+                    color: isDone ? "#ffffff" : hex,
                     border: `1px solid ${isDone ? badge : "var(--border)"}`,
                     fontSize: 19,
                   }}
@@ -98,8 +98,8 @@ export default function JourneyPage() {
 
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p
-                    className="font-head"
-                    style={{ fontSize: 15, fontWeight: 700, color: "var(--cream)", lineHeight: 1.2 }}
+                    className="font-display"
+                    style={{ fontSize: 16, fontWeight: 700, color: "var(--cream)", lineHeight: 1.25 }}
                   >
                     {p.title}
                   </p>

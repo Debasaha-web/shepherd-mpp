@@ -97,7 +97,7 @@ export default function NonNegotiablesPage() {
       {/* STEP 1 — Pick four */}
       {step === 1 && (
         <section className="screen mt-2 flex flex-col flex-1">
-          <h1 className="font-head" style={{ fontSize: 23, fontWeight: 800, lineHeight: 1.2, color: "var(--cream)" }}>
+          <h1 className="font-display" style={{ fontSize: 25, fontWeight: 700, lineHeight: 1.2, color: "var(--cream)" }}>
             Your 4 Non-Negotiables.
           </h1>
           <p style={{ fontSize: 13.5, color: "var(--muted)", marginTop: 10, lineHeight: 1.5 }}>
@@ -179,12 +179,12 @@ export default function NonNegotiablesPage() {
             <Scripture verse={SCRIPTURE["non-negotiables"].verse} reference={SCRIPTURE["non-negotiables"].reference} align="center" />
           </div>
 
-          <div className="card p-5 flex flex-col gap-3" style={{ background: "linear-gradient(180deg, #0f1e30 0%, #0a1322 100%)" }}>
+          <div className="card p-5 flex flex-col gap-3" style={{ background: "linear-gradient(180deg, #ffffff 0%, #f6f3ec 100%)" }}>
             {chosen.map((row, i) => (
               <div
                 key={i}
                 className="flex items-start gap-3.5 p-3.5"
-                style={{ borderRadius: 13, background: "rgba(200,160,74,0.08)", border: "1px solid rgba(200,160,74,0.22)" }}
+                style={{ borderRadius: 13, background: "rgba(176,141,60,0.08)", border: "1px solid rgba(176,141,60,0.22)" }}
               >
                 <span
                   className="font-display flex items-center justify-center shrink-0"

@@ -61,15 +61,15 @@ export function getProtocol(slug: string): Protocol | undefined {
 }
 
 export const ACCENT_HEX: Record<Protocol["accent"], string> = {
-  lime: "#c8a04a",
-  orange: "#c8a04a",
-  blue: "#c8a04a",
-  violet: "#c8a04a",
-  cream: "#c8a04a",
+  lime: "#b08d3c",
+  orange: "#b08d3c",
+  blue: "#b08d3c",
+  violet: "#b08d3c",
+  cream: "#b08d3c",
 };
 
 // Completed / success state — used for the "done" badge + check on the journey list.
-export const COMPLETE_HEX = "#5a9a4a";
+export const COMPLETE_HEX = "#3a5a40";
 
 // Scripture anchor shown on each protocol's reveal/output screen, keyed by slug.
 export const SCRIPTURE: Record<string, { verse: string; reference: string }> = {
