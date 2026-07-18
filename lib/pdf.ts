@@ -200,3 +200,257 @@ export async function downloadPressReleasePdf(d: PressReleaseData) {
   const blob = await pdf(doc).toBlob();
   triggerDownload(blob, slugFilename(d.athleteName, "press-release"));
 }
+
+// ---------------------------------------------------------------------------
+// Protocol 10 — Pre-Practice & Game Routine
+// ---------------------------------------------------------------------------
+export type PregameRoutineData = {
+  athleteName: string;
+  objective: string;
+  mentalPrep: string;
+  physicalPrep: string;
+  emotionalCues: string;
+};
+
+export async function downloadPregameRoutinePdf(d: PregameRoutineData) {
+  const [{ pdf, Document, Page, Text, View, StyleSheet }, ReactMod] = await Promise.all([
+    import("@react-pdf/renderer"),
+    import("react"),
+  ]);
+  const React = ReactMod.default;
+  const h = React.createElement;
+
+  const s = StyleSheet.create({
+    page: { backgroundColor: INK, paddingTop: 64, paddingBottom: 56, paddingHorizontal: 56, fontFamily: "Helvetica" },
+    eyebrow: { fontFamily: "Helvetica-Bold", fontSize: 10, letterSpacing: 3, color: LIME, textTransform: "uppercase" },
+    athlete: { fontFamily: "Helvetica-Bold", fontSize: 13, color: CREAM, marginTop: 6, letterSpacing: 1 },
+    rule: { height: 2, width: 54, backgroundColor: LIME, marginTop: 22, marginBottom: 30 },
+    objLabel: { fontFamily: "Helvetica", fontSize: 12, color: MIST, marginBottom: 10, letterSpacing: 1 },
+    objective: { fontFamily: "Helvetica-Bold", fontSize: 26, color: CREAM, lineHeight: 1.2 },
+    block: { marginTop: 26 },
+    blockLabel: { fontFamily: "Helvetica-Bold", fontSize: 10, letterSpacing: 2, color: LIME, textTransform: "uppercase", marginBottom: 8 },
+    body: { fontFamily: "Helvetica", fontSize: 13, color: CREAM, lineHeight: 1.65 },
+    footerLine: { position: "absolute", bottom: 86, left: 56, right: 56, height: 1, backgroundColor: "#e0d9cc" },
+    footer: { position: "absolute", bottom: 44, left: 56, right: 56, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+    wordmark: { fontFamily: "Helvetica-Bold", fontSize: 15, color: CREAM, letterSpacing: 1 },
+    wordmarkSub: { fontFamily: "Helvetica", fontSize: 8, color: MIST, letterSpacing: 2, textTransform: "uppercase" },
+    season: { fontFamily: "Helvetica", fontSize: 9, color: MIST, letterSpacing: 2, textTransform: "uppercase" },
+  });
+
+  const block = (label: string, text: string) =>
+    text
+      ? h(View, { style: s.block }, h(Text, { style: s.blockLabel }, label), h(Text, { style: s.body }, text))
+      : null;
+
+  const doc = h(
+    Document,
+    null,
+    h(
+      Page,
+      { size: "A4", style: s.page },
+      h(Text, { style: s.eyebrow }, "Pre-Practice & Game Routine"),
+      h(Text, { style: s.athlete }, d.athleteName.toUpperCase()),
+      h(View, { style: s.rule }),
+      h(Text, { style: s.objLabel }, "My objective"),
+      h(Text, { style: s.objective }, d.objective),
+      block("Mental Prep", d.mentalPrep),
+      block("Physical Prep", d.physicalPrep),
+      block("Emotional Cues", d.emotionalCues),
+      h(View, { style: s.footerLine }),
+      h(
+        View,
+        { style: s.footer },
+        h(
+          View,
+          null,
+          h(Text, { style: s.wordmark }, "SHEPHERD"),
+          h(Text, { style: s.wordmarkSub }, "Shepherd Coach Network")
+        ),
+        h(Text, { style: s.season }, "Mental Performance Protocol")
+      )
+    )
+  );
+
+  const blob = await pdf(doc).toBlob();
+  triggerDownload(blob, slugFilename(d.athleteName, "pregame-routine"));
+}
+
+// ---------------------------------------------------------------------------
+// Protocol 13 — Post Game Review System
+// ---------------------------------------------------------------------------
+export type PostgameReviewData = {
+  athleteName: string;
+  performance: string;
+  wentWell: string;
+  learned: string;
+  actionPlan: string;
+};
+
+export async function downloadPostgameReviewPdf(d: PostgameReviewData) {
+  const [{ pdf, Document, Page, Text, View, StyleSheet }, ReactMod] = await Promise.all([
+    import("@react-pdf/renderer"),
+    import("react"),
+  ]);
+  const React = ReactMod.default;
+  const h = React.createElement;
+
+  const s = StyleSheet.create({
+    page: { backgroundColor: INK, paddingTop: 64, paddingBottom: 56, paddingHorizontal: 56, fontFamily: "Helvetica" },
+    eyebrow: { fontFamily: "Helvetica-Bold", fontSize: 10, letterSpacing: 3, color: LIME, textTransform: "uppercase" },
+    athlete: { fontFamily: "Helvetica-Bold", fontSize: 13, color: CREAM, marginTop: 6, letterSpacing: 1 },
+    rule: { height: 2, width: 54, backgroundColor: LIME, marginTop: 22, marginBottom: 30 },
+    perfLabel: { fontFamily: "Helvetica", fontSize: 12, color: MIST, marginBottom: 10, letterSpacing: 1 },
+    performance: { fontFamily: "Helvetica-Bold", fontSize: 26, color: CREAM, lineHeight: 1.2 },
+    block: { marginTop: 26 },
+    blockLabel: { fontFamily: "Helvetica-Bold", fontSize: 10, letterSpacing: 2, color: LIME, textTransform: "uppercase", marginBottom: 8 },
+    body: { fontFamily: "Helvetica", fontSize: 13, color: CREAM, lineHeight: 1.65 },
+    footerLine: { position: "absolute", bottom: 86, left: 56, right: 56, height: 1, backgroundColor: "#e0d9cc" },
+    footer: { position: "absolute", bottom: 44, left: 56, right: 56, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+    wordmark: { fontFamily: "Helvetica-Bold", fontSize: 15, color: CREAM, letterSpacing: 1 },
+    wordmarkSub: { fontFamily: "Helvetica", fontSize: 8, color: MIST, letterSpacing: 2, textTransform: "uppercase" },
+    season: { fontFamily: "Helvetica", fontSize: 9, color: MIST, letterSpacing: 2, textTransform: "uppercase" },
+  });
+
+  const block = (label: string, text: string) =>
+    text
+      ? h(View, { style: s.block }, h(Text, { style: s.blockLabel }, label), h(Text, { style: s.body }, text))
+      : null;
+
+  const doc = h(
+    Document,
+    null,
+    h(
+      Page,
+      { size: "A4", style: s.page },
+      h(Text, { style: s.eyebrow }, "Post Game Review System"),
+      h(Text, { style: s.athlete }, d.athleteName.toUpperCase()),
+      h(View, { style: s.rule }),
+      h(Text, { style: s.perfLabel }, "The performance"),
+      h(Text, { style: s.performance }, d.performance),
+      block("Went Well", d.wentWell),
+      block("Learned", d.learned),
+      block("Next Time", d.actionPlan),
+      h(View, { style: s.footerLine }),
+      h(
+        View,
+        { style: s.footer },
+        h(
+          View,
+          null,
+          h(Text, { style: s.wordmark }, "SHEPHERD"),
+          h(Text, { style: s.wordmarkSub }, "Shepherd Coach Network")
+        ),
+        h(Text, { style: s.season }, "Mental Performance Protocol")
+      )
+    )
+  );
+
+  const blob = await pdf(doc).toBlob();
+  triggerDownload(blob, slugFilename(d.athleteName, "postgame-review"));
+}
+
+// ---------------------------------------------------------------------------
+// Protocol 7 — The Accountability Map
+//
+// Variable length: 3–5 people, each with a support paragraph, then a promise
+// and a check-in. Content can flow onto a second page, so each person's block
+// is kept from splitting (wrap: false) and the footer is `fixed` to repeat on
+// every page rather than absolute-positioned once (as in Protocols 1/2/10/13).
+// ---------------------------------------------------------------------------
+export type AccountabilityMapData = {
+  athleteName: string;
+  people: { name: string; support: string }[];
+  promise: string;
+  checkin: string;
+};
+
+export async function downloadAccountabilityMapPdf(d: AccountabilityMapData) {
+  const [{ pdf, Document, Page, Text, View, StyleSheet }, ReactMod] = await Promise.all([
+    import("@react-pdf/renderer"),
+    import("react"),
+  ]);
+  const React = ReactMod.default;
+  const h = React.createElement;
+
+  const s = StyleSheet.create({
+    // Extra paddingBottom reserves room for the fixed footer on every page.
+    page: { backgroundColor: INK, paddingTop: 64, paddingBottom: 100, paddingHorizontal: 56, fontFamily: "Helvetica" },
+    eyebrow: { fontFamily: "Helvetica-Bold", fontSize: 10, letterSpacing: 3, color: LIME, textTransform: "uppercase" },
+    athlete: { fontFamily: "Helvetica-Bold", fontSize: 13, color: CREAM, marginTop: 6, letterSpacing: 1 },
+    rule: { height: 2, width: 54, backgroundColor: LIME, marginTop: 22, marginBottom: 30 },
+    sectionLabel: { fontFamily: "Helvetica", fontSize: 12, color: MIST, marginBottom: 4, letterSpacing: 1 },
+    person: { marginTop: 22 },
+    personName: { fontFamily: "Helvetica-Bold", fontSize: 15, color: CREAM, letterSpacing: 0.5, marginBottom: 6 },
+    body: { fontFamily: "Helvetica", fontSize: 13, color: CREAM, lineHeight: 1.65 },
+    promiseWrap: { marginTop: 34 },
+    promiseLabel: { fontFamily: "Helvetica-Bold", fontSize: 10, letterSpacing: 2, color: LIME, textTransform: "uppercase", marginBottom: 10, textAlign: "center" },
+    promise: { fontFamily: "Helvetica-Bold", fontSize: 22, color: LIME, lineHeight: 1.3, textAlign: "center" },
+    block: { marginTop: 30 },
+    blockLabel: { fontFamily: "Helvetica-Bold", fontSize: 10, letterSpacing: 2, color: LIME, textTransform: "uppercase", marginBottom: 8 },
+    footerLine: { position: "absolute", bottom: 86, left: 56, right: 56, height: 1, backgroundColor: "#e0d9cc" },
+    footer: { position: "absolute", bottom: 44, left: 56, right: 56, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+    wordmark: { fontFamily: "Helvetica-Bold", fontSize: 15, color: CREAM, letterSpacing: 1 },
+    wordmarkSub: { fontFamily: "Helvetica", fontSize: 8, color: MIST, letterSpacing: 2, textTransform: "uppercase" },
+    season: { fontFamily: "Helvetica", fontSize: 9, color: MIST, letterSpacing: 2, textTransform: "uppercase" },
+  });
+
+  const children: any[] = [
+    h(Text, { style: s.eyebrow, key: "eyebrow" }, "The Accountability Map"),
+    h(Text, { style: s.athlete, key: "athlete" }, d.athleteName.toUpperCase()),
+    h(View, { style: s.rule, key: "rule" }),
+    h(Text, { style: s.sectionLabel, key: "circle-label" }, "My circle"),
+  ];
+
+  // One block per person — kept whole across page breaks.
+  d.people.forEach((p, i) => {
+    children.push(
+      h(
+        View,
+        { style: s.person, wrap: false, key: `person-${i}` },
+        h(Text, { style: s.personName }, p.name),
+        p.support ? h(Text, { style: s.body }, p.support) : null
+      )
+    );
+  });
+
+  if (d.promise) {
+    children.push(
+      h(
+        View,
+        { style: s.promiseWrap, wrap: false, key: "promise" },
+        h(Text, { style: s.promiseLabel }, "My promise"),
+        h(Text, { style: s.promise }, `“${d.promise}”`)
+      )
+    );
+  }
+
+  if (d.checkin) {
+    children.push(
+      h(
+        View,
+        { style: s.block, wrap: false, key: "checkin" },
+        h(Text, { style: s.blockLabel }, "My Check-In"),
+        h(Text, { style: s.body }, d.checkin)
+      )
+    );
+  }
+
+  children.push(h(View, { style: s.footerLine, fixed: true, key: "footer-line" }));
+  children.push(
+    h(
+      View,
+      { style: s.footer, fixed: true, key: "footer" },
+      h(
+        View,
+        null,
+        h(Text, { style: s.wordmark }, "SHEPHERD"),
+        h(Text, { style: s.wordmarkSub }, "Shepherd Coach Network")
+      ),
+      h(Text, { style: s.season }, "Mental Performance Protocol")
+    )
+  );
+
+  const doc = h(Document, null, h(Page, { size: "A4", style: s.page }, ...children));
+  const blob = await pdf(doc).toBlob();
+  triggerDownload(blob, slugFilename(d.athleteName, "accountability-map"));
+}

@@ -41,7 +41,7 @@ export default function LandingPage() {
             maxWidth: 340,
           }}
         >
-          5 exercises that separate good athletes from great ones.
+          13 exercises that separate good athletes from great ones.
         </p>
       </section>
 

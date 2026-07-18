@@ -10,6 +10,10 @@ export default function Scripture({
   reference: string;
   align?: "left" | "center";
 }) {
+  // Hide the block entirely when the verse is missing or a placeholder,
+  // rather than rendering "[TBD]" text.
+  if (!verse.trim() || verse.trim() === "[TBD]") return null;
+
   return (
     <div
       className="scripture"
