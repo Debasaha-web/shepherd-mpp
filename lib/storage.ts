@@ -2,15 +2,23 @@
 
 import { getAthlete, markCompleted } from "./athlete";
 
+// Shown on any protocol step when saveResponse() fails.
+export const SAVE_ERROR =
+  "Something went wrong — your response was not saved. Please try again.";
+
 // Persist a protocol's responses to Supabase via the API route, then
 // cache completion locally so the journey page updates instantly.
+// Returns true only when the save actually succeeded. On any failure it
+// returns false WITHOUT marking the protocol complete, so callers can keep
+// the athlete on the current step and show an error instead of a false
+// "Saved" message.
 export async function saveResponse(
   protocolNumber: number,
   protocolSlug: string,
   responses: Record<string, unknown>
-): Promise<{ ok: boolean; error?: string }> {
+): Promise<boolean> {
   const athlete = getAthlete();
-  if (!athlete) return { ok: false, error: "No athlete session" };
+  if (!athlete) return false;
 
   try {
     const res = await fetch("/api/submit-response", {
@@ -23,14 +31,11 @@ export async function saveResponse(
         responses,
       }),
     });
-    const data = await res.json();
-    if (!res.ok) return { ok: false, error: data.error || "Save failed" };
+    if (!res.ok) return false;
 
     markCompleted(protocolNumber);
-    return { ok: true };
+    return true;
   } catch {
-    // Still mark locally so the athlete isn't blocked offline.
-    markCompleted(protocolNumber);
-    return { ok: false, error: "Network error — saved on this device only" };
+    return false;
   }
 }

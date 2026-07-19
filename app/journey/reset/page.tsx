@@ -7,7 +7,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 
 const TOTAL = 4;
 
@@ -37,6 +38,7 @@ export default function ResetPage() {
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -45,16 +47,24 @@ export default function ResetPage() {
   const mantraValid = mantraWords.length >= 1 && mantraWords.length <= 3;
 
   async function goToReveal() {
-    setStep(4);
-    if (saved) return;
+    if (saved) {
+      setStep(4);
+      return;
+    }
     setSaving(true);
-    await saveResponse(3, "reset", {
+    setSaveError("");
+    const ok = await saveResponse(3, "reset", {
       physical_action: physicalFinal,
       breath_work: breath,
       mantra: mantra.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(4);
   }
 
   const notesText = `MY RESET PROTOCOL\n\n1. ${physicalFinal}\n2. ${breath}\n3. "${mantra.trim()}"\n\n— Shepherd Coach Network`;
@@ -179,11 +189,12 @@ export default function ResetPage() {
 
           <button
             onClick={goToReveal}
-            disabled={!mantraValid}
+            disabled={!mantraValid || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my reset →
+            {saving ? "Saving…" : "Reveal my reset →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

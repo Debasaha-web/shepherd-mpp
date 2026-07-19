@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import StepHeader from "@/components/StepHeader";
 import Wordmark from "@/components/Wordmark";
 import Scripture from "@/components/Scripture";
+import SaveError from "@/components/SaveError";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
 import { downloadMissionPdf } from "@/lib/pdf";
 import { SCRIPTURE } from "@/lib/protocols";
 
@@ -24,6 +25,7 @@ export default function MissionPage() {
   const [dedicateToGod, setDedicateToGod] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) {
     return <Loading />;
@@ -32,10 +34,13 @@ export default function MissionPage() {
   const dedicateTo = relationship.trim() ? `${name.trim()} (${relationship.trim()})` : name.trim();
 
   async function goToReveal() {
-    setStep(4);
-    if (saved) return;
+    if (saved) {
+      setStep(4);
+      return;
+    }
     setSaving(true);
-    await saveResponse(1, "mission", {
+    setSaveError("");
+    const ok = await saveResponse(1, "mission", {
       dedicate_to_name: name.trim(),
       dedicate_to_relationship: relationship.trim(),
       dedicate_to_god: dedicateToGod,
@@ -43,7 +48,12 @@ export default function MissionPage() {
       paragraph_2: para2.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(4);
   }
 
   return (
@@ -128,7 +138,12 @@ export default function MissionPage() {
           hint="One more paragraph. What will you do, and what will it mean to them?"
         >
           <Textarea value={para2} onChange={setPara2} placeholder="Next season I will..." />
-          <NextButton label="Reveal my statement →" disabled={para2.trim().length < 10} onClick={goToReveal} />
+          <NextButton
+            label={saving ? "Saving…" : "Reveal my statement →"}
+            disabled={para2.trim().length < 10 || saving}
+            onClick={goToReveal}
+          />
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

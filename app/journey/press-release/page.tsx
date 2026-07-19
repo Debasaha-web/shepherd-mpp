@@ -8,7 +8,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea, NextButton } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 import { downloadPressReleasePdf, type PressReleaseData } from "@/lib/pdf";
 
 const TOTAL = 6;
@@ -67,6 +68,7 @@ export default function PressReleasePage() {
   const [differently, setDifferently] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -87,10 +89,13 @@ export default function PressReleasePage() {
   };
 
   async function goToReveal() {
-    setStep(6);
-    if (saved) return;
+    if (saved) {
+      setStep(6);
+      return;
+    }
     setSaving(true);
-    await saveResponse(2, "press-release", {
+    setSaveError("");
+    const ok = await saveResponse(2, "press-release", {
       win_choice: win,
       team_name: teamValue,
       athlete_quote: athleteQuote.trim(),
@@ -99,7 +104,12 @@ export default function PressReleasePage() {
       what_we_did_differently: differently.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(6);
   }
 
   return (
@@ -195,7 +205,12 @@ export default function PressReleasePage() {
           hint="2–3 sentences. What set this team apart from every other?"
         >
           <Textarea value={differently} onChange={setDifferently} placeholder="We held each other to a higher standard…" />
-          <NextButton label="Build the press release →" disabled={differently.trim().length < 10} onClick={goToReveal} />
+          <NextButton
+            label={saving ? "Saving…" : "Build the press release →"}
+            disabled={differently.trim().length < 10 || saving}
+            onClick={goToReveal}
+          />
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

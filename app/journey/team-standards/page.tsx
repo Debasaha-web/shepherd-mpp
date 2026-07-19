@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import StepHeader from "@/components/StepHeader";
 import Wordmark from "@/components/Wordmark";
 import Scripture from "@/components/Scripture";
+import SaveError from "@/components/SaveError";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
 
 const TOTAL = 2;
 
@@ -58,6 +59,7 @@ export default function TeamStandardsPage() {
   const [picks, setPicks] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -65,15 +67,23 @@ export default function TeamStandardsPage() {
   const chosen = CATEGORIES.map((c) => ({ category: c.label, standard: picks[c.key] }));
 
   async function goToReveal() {
-    setStep(2);
-    if (saved) return;
+    if (saved) {
+      setStep(2);
+      return;
+    }
     setSaving(true);
-    await saveResponse(5, "team-standards", {
+    setSaveError("");
+    const ok = await saveResponse(5, "team-standards", {
       team_name: athlete!.team_name || null,
       team_standards: chosen,
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(2);
   }
 
   return (
@@ -147,11 +157,12 @@ export default function TeamStandardsPage() {
 
           <button
             onClick={goToReveal}
-            disabled={!allPicked}
+            disabled={!allPicked || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-8"
           >
-            Set our standards →
+            {saving ? "Saving…" : "Set our standards →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </section>
       )}
 

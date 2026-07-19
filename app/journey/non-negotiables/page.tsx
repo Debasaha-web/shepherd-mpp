@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import StepHeader from "@/components/StepHeader";
 import Wordmark from "@/components/Wordmark";
 import Scripture from "@/components/Scripture";
+import SaveError from "@/components/SaveError";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
 
 const TOTAL = 2;
 
@@ -69,6 +70,7 @@ export default function NonNegotiablesPage() {
   const [picks, setPicks] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -76,12 +78,20 @@ export default function NonNegotiablesPage() {
   const chosen = CATEGORIES.map((c) => ({ category: c.label, statement: picks[c.key] }));
 
   async function goToReveal() {
-    setStep(2);
-    if (saved) return;
+    if (saved) {
+      setStep(2);
+      return;
+    }
     setSaving(true);
-    await saveResponse(4, "non-negotiables", { non_negotiables: chosen });
+    setSaveError("");
+    const ok = await saveResponse(4, "non-negotiables", { non_negotiables: chosen });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(2);
   }
 
   return (
@@ -155,11 +165,12 @@ export default function NonNegotiablesPage() {
 
           <button
             onClick={goToReveal}
-            disabled={!allPicked}
+            disabled={!allPicked || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-8"
           >
-            Lock them in →
+            {saving ? "Saving…" : "Lock them in →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </section>
       )}
 
