@@ -7,7 +7,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 import { downloadPostgameReviewPdf } from "@/lib/pdf";
 
 const TOTAL = 6;
@@ -25,14 +26,18 @@ export default function PostgameReviewPage() {
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
   async function goToReveal() {
-    setStep(6);
-    if (saved) return;
+    if (saved) {
+      setStep(6);
+      return;
+    }
     setSaving(true);
-    await saveResponse(13, "postgame-review", {
+    setSaveError("");
+    const ok = await saveResponse(13, "postgame-review", {
       performance: performance.trim(),
       went_well: wentWell.trim(),
       learned: learned.trim(),
@@ -40,7 +45,12 @@ export default function PostgameReviewPage() {
       application: application.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(6);
   }
 
   const notesText = `MY POST-GAME REVIEW\n\nPERFORMANCE:\n${performance.trim()}\n\nWENT WELL:\n${wentWell.trim()}\n\nLEARNED:\n${learned.trim()}\n\nNEXT TIME:\n${actionPlan.trim()}\n\n— Shepherd Coach Network`;
@@ -182,11 +192,12 @@ export default function PostgameReviewPage() {
           </p>
           <button
             onClick={goToReveal}
-            disabled={!application.trim()}
+            disabled={!application.trim() || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my review →
+            {saving ? "Saving…" : "Reveal my review →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

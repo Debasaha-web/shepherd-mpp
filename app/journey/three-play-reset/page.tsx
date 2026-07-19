@@ -7,7 +7,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 
 const TOTAL = 4;
 
@@ -31,6 +32,7 @@ export default function ThreePlayResetPage() {
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -48,16 +50,24 @@ export default function ThreePlayResetPage() {
   }
 
   async function goToReveal() {
-    setStep(4);
-    if (saved) return;
+    if (saved) {
+      setStep(4);
+      return;
+    }
     setSaving(true);
-    await saveResponse(12, "three-play-reset", {
+    setSaveError("");
+    const ok = await saveResponse(12, "three-play-reset", {
       actions: trimmedActions as [string, string, string],
       benefit: benefit.trim(),
       visualization: visualization.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(4);
   }
 
   const notesText = `MY 3-PLAY RESET\n\n1. ${trimmedActions[0]}\n2. ${trimmedActions[1]}\n3. ${trimmedActions[2]}\n\n— Shepherd Coach Network`;
@@ -165,11 +175,12 @@ export default function ThreePlayResetPage() {
           </p>
           <button
             onClick={goToReveal}
-            disabled={!visualization.trim()}
+            disabled={!visualization.trim() || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my reset →
+            {saving ? "Saving…" : "Reveal my reset →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

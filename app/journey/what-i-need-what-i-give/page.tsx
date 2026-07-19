@@ -7,7 +7,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 
 const TOTAL = 5;
 
@@ -26,6 +27,7 @@ export default function WhatINeedWhatIGivePage() {
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -50,17 +52,25 @@ export default function WhatINeedWhatIGivePage() {
   }
 
   async function goToReveal() {
-    setStep(5);
-    if (saved) return;
+    if (saved) {
+      setStep(5);
+      return;
+    }
     setSaving(true);
-    await saveResponse(6, "what-i-need-what-i-give", {
+    setSaveError("");
+    const ok = await saveResponse(6, "what-i-need-what-i-give", {
       needs: trimmedNeeds as [string, string, string],
       gives: trimmedGives as [string, string, string],
       commitment: commitment.trim(),
       feeling: feeling.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(5);
   }
 
   const notesText = `WHAT I NEED, WHAT I GIVE\n\nI NEED:\n1. ${trimmedNeeds[0]}\n2. ${trimmedNeeds[1]}\n3. ${trimmedNeeds[2]}\n\nI GIVE:\n1. ${trimmedGives[0]}\n2. ${trimmedGives[1]}\n3. ${trimmedGives[2]}\n\nMY COMMITMENT:\n${commitment.trim()}\n\n— Shepherd Coach Network`;
@@ -202,11 +212,12 @@ export default function WhatINeedWhatIGivePage() {
           </p>
           <button
             onClick={goToReveal}
-            disabled={!feeling.trim()}
+            disabled={!feeling.trim() || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my exchange →
+            {saving ? "Saving…" : "Reveal my exchange →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

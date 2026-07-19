@@ -7,7 +7,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 
 const TOTAL = 5;
 
@@ -27,16 +28,20 @@ export default function PressureProtocolPage() {
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
   const protocolValid = Boolean(breathing && mantra.trim() && anchor.trim());
 
   async function goToReveal() {
-    setStep(5);
-    if (saved) return;
+    if (saved) {
+      setStep(5);
+      return;
+    }
     setSaving(true);
-    await saveResponse(11, "pressure-protocol", {
+    setSaveError("");
+    const ok = await saveResponse(11, "pressure-protocol", {
       past_moment: pastMoment.trim(),
       analysis: analysis.trim(),
       breathing,
@@ -45,7 +50,12 @@ export default function PressureProtocolPage() {
       future_use: futureUse.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(5);
   }
 
   const notesText = `MY PRESSURE PROTOCOL\n\n1. BREATHE: ${breathing}\n2. SAY: "${mantra.trim()}"\n3. ANCHOR: ${anchor.trim()}\n\n— Shepherd Coach Network`;
@@ -175,11 +185,12 @@ export default function PressureProtocolPage() {
           </p>
           <button
             onClick={goToReveal}
-            disabled={!futureUse.trim()}
+            disabled={!futureUse.trim() || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my protocol →
+            {saving ? "Saving…" : "Reveal my protocol →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

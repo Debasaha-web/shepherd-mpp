@@ -7,7 +7,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 import { downloadPregameRoutinePdf } from "@/lib/pdf";
 
 const TOTAL = 6;
@@ -27,16 +28,20 @@ export default function PregameRoutinePage() {
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
   const timelineValid = Boolean(mentalPrep.trim() && physicalPrep.trim() && emotionalCues.trim());
 
   async function goToReveal() {
-    setStep(6);
-    if (saved) return;
+    if (saved) {
+      setStep(6);
+      return;
+    }
     setSaving(true);
-    await saveResponse(10, "pregame-routine", {
+    setSaveError("");
+    const ok = await saveResponse(10, "pregame-routine", {
       objective: objective.trim(),
       approach: approach.trim(),
       mental_prep: mentalPrep.trim(),
@@ -46,7 +51,12 @@ export default function PregameRoutinePage() {
       visualization: visualization.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(6);
   }
 
   const notesText = `MY PRE-GAME ROUTINE\n\nOBJECTIVE:\n${objective.trim()}\n\nMENTAL PREP:\n${mentalPrep.trim()}\n\nPHYSICAL PREP:\n${physicalPrep.trim()}\n\nEMOTIONAL CUES:\n${emotionalCues.trim()}\n\n— Shepherd Coach Network`;
@@ -195,11 +205,12 @@ export default function PregameRoutinePage() {
           </p>
           <button
             onClick={goToReveal}
-            disabled={!visualization.trim()}
+            disabled={!visualization.trim() || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my routine →
+            {saving ? "Saving…" : "Reveal my routine →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

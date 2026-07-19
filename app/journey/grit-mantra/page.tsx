@@ -7,7 +7,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 
 const TOTAL = 5;
 
@@ -25,6 +26,7 @@ export default function GritMantraPage() {
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -32,17 +34,25 @@ export default function GritMantraPage() {
   const mantraValid = mantraWords.length >= 1 && mantraWords.length <= 7;
 
   async function goToReveal() {
-    setStep(5);
-    if (saved) return;
+    if (saved) {
+      setStep(5);
+      return;
+    }
     setSaving(true);
-    await saveResponse(9, "grit-mantra", {
+    setSaveError("");
+    const ok = await saveResponse(9, "grit-mantra", {
       challenge: challenge.trim(),
       mantra: mantra.trim(),
       meaning: meaning.trim(),
       spoken: spoken.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(5);
   }
 
   const notesText = `MY GRIT MANTRA\n\n"${mantra.trim()}"\n\n— Shepherd Coach Network`;
@@ -172,11 +182,12 @@ export default function GritMantraPage() {
           </p>
           <button
             onClick={goToReveal}
-            disabled={!spoken.trim()}
+            disabled={!spoken.trim() || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my mantra →
+            {saving ? "Saving…" : "Reveal my mantra →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

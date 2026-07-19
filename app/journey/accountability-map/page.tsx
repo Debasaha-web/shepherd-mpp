@@ -8,7 +8,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 import { downloadAccountabilityMapPdf } from "@/lib/pdf";
 
 const TOTAL = 5;
@@ -26,6 +27,7 @@ export default function AccountabilityMapPage() {
   const [checkin, setCheckin] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -47,21 +49,29 @@ export default function AccountabilityMapPage() {
   }
 
   async function goToReveal() {
-    setStep(5);
-    if (saved) return;
+    if (saved) {
+      setStep(5);
+      return;
+    }
     setSaving(true);
+    setSaveError("");
     const trimmedSupport: Record<string, string> = {};
     namedPeople.forEach((x) => {
       trimmedSupport[x.name] = support[x.i].trim();
     });
-    await saveResponse(7, "accountability-map", {
+    const ok = await saveResponse(7, "accountability-map", {
       people,
       support: trimmedSupport,
       promise: promise.trim(),
       checkin: checkin.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(5);
   }
 
   return (
@@ -169,11 +179,12 @@ export default function AccountabilityMapPage() {
           </p>
           <button
             onClick={goToReveal}
-            disabled={!checkin.trim()}
+            disabled={!checkin.trim() || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my map →
+            {saving ? "Saving…" : "Reveal my map →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 

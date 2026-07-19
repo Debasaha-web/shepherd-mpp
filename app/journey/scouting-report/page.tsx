@@ -7,7 +7,8 @@ import Scripture from "@/components/Scripture";
 import { SCRIPTURE } from "@/lib/protocols";
 import { Loading, Section, Label, Textarea } from "@/components/StepUI";
 import { useAthleteGuard } from "@/lib/useAthleteGuard";
-import { saveResponse } from "@/lib/storage";
+import { saveResponse, SAVE_ERROR } from "@/lib/storage";
+import SaveError from "@/components/SaveError";
 
 const TOTAL = 5;
 
@@ -32,6 +33,7 @@ export default function ScoutingReportPage() {
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   if (!ready || !athlete) return <Loading />;
 
@@ -50,17 +52,25 @@ export default function ScoutingReportPage() {
   }
 
   async function goToReveal() {
-    setStep(5);
-    if (saved) return;
+    if (saved) {
+      setStep(5);
+      return;
+    }
     setSaving(true);
-    await saveResponse(8, "scouting-report", {
+    setSaveError("");
+    const ok = await saveResponse(8, "scouting-report", {
       want_said: wantSaid.trim(),
       traits: trimmedTraits as [string, string, string],
       habits: habits.trim(),
       visualization: visualization.trim(),
     });
     setSaving(false);
+    if (!ok) {
+      setSaveError(SAVE_ERROR);
+      return;
+    }
     setSaved(true);
+    setStep(5);
   }
 
   const notesText = `SCOUTING REPORT: ${firstName.toUpperCase()}\n\nKEY TRAITS:\n${filledTraits.map((t, i) => `${i + 1}. ${t}`).join("\n")}\n\nTHE WARNING:\n${wantSaid.trim()}\n\n— Shepherd Coach Network`;
@@ -185,11 +195,12 @@ export default function ScoutingReportPage() {
           </p>
           <button
             onClick={goToReveal}
-            disabled={!visualization.trim()}
+            disabled={!visualization.trim() || saving}
             className="btn-gold w-full rounded-xl py-4 text-sm mt-7"
           >
-            Reveal my report →
+            {saving ? "Saving…" : "Reveal my report →"}
           </button>
+          {saveError && <SaveError message={saveError} />}
         </Section>
       )}
 
