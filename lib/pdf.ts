@@ -95,7 +95,7 @@ export async function downloadMissionPdf(d: MissionData) {
           h(Text, { style: s.wordmark }, "SHEPHERD"),
           h(Text, { style: s.wordmarkSub }, "Shepherd Coach Network")
         ),
-        h(Text, { style: s.season }, "Mental Performance Protocol")
+        h(Text, { style: s.season }, "Shepherd Mental Edge Protocols")
       )
     )
   );
@@ -266,7 +266,7 @@ export async function downloadPregameRoutinePdf(d: PregameRoutineData) {
           h(Text, { style: s.wordmark }, "SHEPHERD"),
           h(Text, { style: s.wordmarkSub }, "Shepherd Coach Network")
         ),
-        h(Text, { style: s.season }, "Mental Performance Protocol")
+        h(Text, { style: s.season }, "Shepherd Mental Edge Protocols")
       )
     )
   );
@@ -340,7 +340,7 @@ export async function downloadPostgameReviewPdf(d: PostgameReviewData) {
           h(Text, { style: s.wordmark }, "SHEPHERD"),
           h(Text, { style: s.wordmarkSub }, "Shepherd Coach Network")
         ),
-        h(Text, { style: s.season }, "Mental Performance Protocol")
+        h(Text, { style: s.season }, "Shepherd Mental Edge Protocols")
       )
     )
   );
@@ -446,7 +446,7 @@ export async function downloadAccountabilityMapPdf(d: AccountabilityMapData) {
         h(Text, { style: s.wordmark }, "SHEPHERD"),
         h(Text, { style: s.wordmarkSub }, "Shepherd Coach Network")
       ),
-      h(Text, { style: s.season }, "Mental Performance Protocol")
+      h(Text, { style: s.season }, "Shepherd Mental Edge Protocols")
     )
   );
 

@@ -21,17 +21,23 @@ export default function LandingPage() {
       </header>
 
       <section className="mt-14">
-        <p className="eyebrow mb-4">The Mental Performance Protocol</p>
+        <p className="eyebrow mb-4">The Shepherd Mental Edge</p>
         <h1
           className="font-display"
           style={{ fontSize: 40, lineHeight: 1.02, color: "var(--cream)" }}
         >
-          MENTAL
+          SHEPHERD
           <br />
-          PERFORMANCE
+          MENTAL EDGE
           <br />
-          <span style={{ color: "var(--gold)" }}>PROTOCOLS</span>
+          PROTOCOLS
         </h1>
+        <p
+          className="font-display"
+          style={{ fontSize: 22, lineHeight: 1.1, color: "var(--gold)", marginTop: 10 }}
+        >
+          (Overcoming Your Goliaths)
+        </p>
         <p
           style={{
             marginTop: 18,

@@ -1,10 +1,10 @@
 # Shepherd MPP
 
-**Shepherd Coach Network · Mental Performance Protocols.** Five guided,
+**Shepherd Coach Network · Shepherd Mental Edge Protocols (Overcoming Your Goliaths).** Five guided,
 athlete-facing protocols with a Scripture anchor on each and a faith dimension
 in Protocol 1. Mobile-first (430px centered), navy + gold theme.
 
-A faith-integrated Mental Performance Protocol app — five protocols deployed as
+A faith-integrated Shepherd Mental Edge Protocols (Overcoming Your Goliaths) app — five protocols deployed as
 a standalone product (its own repo, Vercel project, and Supabase database).
 Built with Next.js 14 (App Router, TypeScript), Tailwind, Supabase, and
 `@react-pdf/renderer`.

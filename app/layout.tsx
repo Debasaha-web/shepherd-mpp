@@ -27,8 +27,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Shepherd MPP",
-  description: "Shepherd Coach Network · Mental Performance Protocols",
+  title: "Shepherd Mental Edge Protocols",
+  description: "Shepherd Coach Network · Shepherd Mental Edge Protocols (Overcoming Your Goliaths)",
 };
 
 export const viewport: Viewport = {
