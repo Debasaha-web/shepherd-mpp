@@ -165,12 +165,36 @@ export const SCRIPTURE: Record<string, { verse: string; reference: string }> = {
     verse: "As iron sharpens iron, so one person sharpens another.",
     reference: "Proverbs 27:17",
   },
-  "what-i-need-what-i-give": { verse: "[TBD]", reference: "[TBD]" },
-  "accountability-map": { verse: "[TBD]", reference: "[TBD]" },
-  "scouting-report": { verse: "[TBD]", reference: "[TBD]" },
-  "grit-mantra": { verse: "[TBD]", reference: "[TBD]" },
-  "pregame-routine": { verse: "[TBD]", reference: "[TBD]" },
-  "pressure-protocol": { verse: "[TBD]", reference: "[TBD]" },
-  "three-play-reset": { verse: "[TBD]", reference: "[TBD]" },
-  "postgame-review": { verse: "[TBD]", reference: "[TBD]" },
+  "what-i-need-what-i-give": {
+    verse: "Each of you should use whatever gift you have received to serve others.",
+    reference: "1 Peter 4:10",
+  },
+  "accountability-map": {
+    verse: "Two are better than one, because they have a good return for their labor.",
+    reference: "Ecclesiastes 4:9",
+  },
+  "scouting-report": {
+    verse: "A good name is more desirable than great riches.",
+    reference: "Proverbs 22:1",
+  },
+  "grit-mantra": {
+    verse: "Let us run with perseverance the race marked out for us.",
+    reference: "Hebrews 12:1",
+  },
+  "pregame-routine": {
+    verse: "The plans of the diligent lead to profit.",
+    reference: "Proverbs 21:5",
+  },
+  "pressure-protocol": {
+    verse: "Do not be anxious about anything, but in every situation, present your requests to God.",
+    reference: "Philippians 4:6",
+  },
+  "three-play-reset": {
+    verse: "Though he may stumble, he will not fall, for the Lord upholds him with his hand.",
+    reference: "Psalm 37:24",
+  },
+  "postgame-review": {
+    verse: "Do not conform to the pattern of this world, but be transformed by the renewing of your mind.",
+    reference: "Romans 12:2",
+  },
 };
