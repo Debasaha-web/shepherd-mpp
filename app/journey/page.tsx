@@ -74,6 +74,54 @@ export default function JourneyPage() {
       </section>
 
       <section className="mt-8 flex flex-col gap-3.5">
+        {/* Orientation — not a protocol; links to the /welcome overview */}
+        <Link href="/welcome" style={{ textDecoration: "none" }}>
+          <div
+            className="module-card p-5 flex items-center gap-4"
+            style={{ borderColor: "var(--gold)" }}
+          >
+            <div
+              className="font-head flex items-center justify-center shrink-0"
+              style={{
+                width: 46,
+                height: 46,
+                borderRadius: 13,
+                background: "var(--gold)",
+                color: "#ffffff",
+                border: "1px solid var(--gold)",
+                fontSize: 20,
+              }}
+            >
+              ★
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p
+                className="font-display"
+                style={{ fontSize: 16, fontWeight: 700, color: "var(--cream)", lineHeight: 1.25 }}
+              >
+                Start Here
+              </p>
+              <p style={{ fontSize: 12.5, color: "var(--muted)", marginTop: 3, lineHeight: 1.3 }}>
+                The David vs Goliath Shepherd Mental Edge Factor
+              </p>
+              <span
+                className="font-head"
+                style={{
+                  display: "inline-block",
+                  marginTop: 8,
+                  fontSize: 9.5,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  fontWeight: 700,
+                  color: "var(--gold)",
+                }}
+              >
+                Orientation
+              </span>
+            </div>
+          </div>
+        </Link>
+
         {PROTOCOLS.map((p) => {
           const isDone = completed.includes(p.number);
           const hex = ACCENT_HEX[p.accent];
